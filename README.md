@@ -2,7 +2,7 @@
 
 [![GoDoc](https://godoc.org/github.com/ldez/go-auroradns?status.svg)](https://godoc.org/github.com/ldez/go-auroradns)
 [![Build Status](https://travis-ci.org/ldez/go-auroradns.svg?branch=master)](https://travis-ci.org/ldez/go-auroradns)
-[![Go Report Card](https://goreportcard.com/badge/ldez/go-auroradns)](http://goreportcard.com/report/ldez/go-auroradns)
+[![Go Report Card](https://goreportcard.com/badge/ldez/go-auroradns)](https://goreportcard.com/report/ldez/go-auroradns)
 
 An Aurora DNS API client written in Go.
 
