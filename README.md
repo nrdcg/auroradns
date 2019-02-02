@@ -1,12 +1,12 @@
 # Go library for accessing the Aurora DNS API
 
-[![GoDoc](https://godoc.org/github.com/ldez/go-auroradns?status.svg)](https://godoc.org/github.com/ldez/go-auroradns)
-[![Build Status](https://travis-ci.org/ldez/go-auroradns.svg?branch=master)](https://travis-ci.org/ldez/go-auroradns)
-[![Go Report Card](https://goreportcard.com/badge/github.com/ldez/go-auroradns)](https://goreportcard.com/report/github.com/ldez/go-auroradns)
+[![GoDoc](https://godoc.org/github.com/nrdcg/auroradns?status.svg)](https://godoc.org/github.com/nrdcg/auroradns)
+[![Build Status](https://travis-ci.org/nrdcg/auroradns.svg?branch=master)](https://travis-ci.org/nrdcg/auroradns)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nrdcg/auroradns)](https://goreportcard.com/report/github.com/nrdcg/auroradns)
 
 An Aurora DNS API client written in Go.
 
-go-auroradns is a Go client library for accessing the Aurora DNS API.
+auroradns is a Go client library for accessing the Aurora DNS API.
 
 ## Available API methods
 
