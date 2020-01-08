@@ -59,6 +59,7 @@ func (t *TokenTransport) Wrap(client *http.Client) *http.Client {
 	backup := client.Transport
 	t.Transport = backup
 	client.Transport = t
+
 	return client
 }
 
@@ -74,6 +75,7 @@ func (t *TokenTransport) transport() http.RoundTripper {
 	if t.Transport != nil {
 		return t.Transport
 	}
+
 	return http.DefaultTransport
 }
 

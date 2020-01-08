@@ -1,12 +1,20 @@
-.PHONY: test check
+.PHONY: default clean check test fmt
 
-default: vendor check test
+GOFILES := $(shell go list -f '{{range $$index, $$element := .GoFiles}}{{$$.Dir}}/{{$$element}}{{"\n"}}{{end}}' ./... | grep -v '/vendor/')
 
-test:
-	GO111MODULE=on go test -v ./...
+default: clean check test build
+
+test: clean
+	go test -v -cover ./...
+
+clean:
+	rm -f cover.out
+
+build:
+	go build
+
+fmt:
+	gofmt -s -l -w $(GOFILES)
 
 check:
 	golangci-lint run
-
-vendor:
-	GO111MODULE=on go mod vendor

@@ -28,6 +28,10 @@
     "gas",
     "dupl",
     "prealloc",
+    "bodyclose",
+    "gomnd",
+    "stylecheck",
+    "wsl",
   ]
 
 [issues]
