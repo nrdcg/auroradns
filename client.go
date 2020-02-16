@@ -122,9 +122,7 @@ func checkResponse(resp *http.Response) error {
 		return errorResponse
 	}
 
-	defer func() { _ = resp.Body.Close() }()
-
-	return nil
+	return fmt.Errorf("status code: %d %s", resp.StatusCode, resp.Status)
 }
 
 // WithBaseURL Allows to define a custom base URL
