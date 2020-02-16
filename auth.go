@@ -43,11 +43,11 @@ func (t *TokenTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		timestamp := time.Now().UTC()
 
 		fmtTime := timestamp.Format("20060102T150405Z")
-		req.Header.Set("X-AuroraDNS-Date", fmtTime)
+		enrichedReq.Header.Set("X-AuroraDNS-Date", fmtTime)
 
 		token, err := newToken(t.userID, t.key, req.Method, req.URL.Path, timestamp)
 		if err == nil {
-			req.Header.Set("Authorization", fmt.Sprintf("AuroraDNSv1 %s", token))
+			enrichedReq.Header.Set("Authorization", fmt.Sprintf("AuroraDNSv1 %s", token))
 		}
 	}
 

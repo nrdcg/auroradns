@@ -36,9 +36,9 @@ func TestTokenTransport_RoundTrip(t *testing.T) {
 
 	req := httptest.NewRequest(http.MethodGet, "http://example.com", nil)
 
-	_, err = transport.RoundTrip(req)
+	resp, err := transport.RoundTrip(req)
 	require.NoError(t, err)
 
-	assert.Regexp(t, `\d{8}T\d{6}Z`, req.Header.Get("X-Auroradns-Date"))
-	assert.Regexp(t, `AuroraDNSv1 \w{64}`, req.Header.Get("Authorization"))
+	assert.Regexp(t, `\d{8}T\d{6}Z`, resp.Request.Header.Get("X-Auroradns-Date"))
+	assert.Regexp(t, `AuroraDNSv1 \w{64}`, resp.Request.Header.Get("Authorization"))
 }
