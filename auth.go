@@ -4,13 +4,14 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
 	"time"
 )
 
-// TokenTransport HTTP transport for API authentication
+// TokenTransport HTTP transport for API authentication.
 type TokenTransport struct {
 	userID string
 	key    string
@@ -20,16 +21,16 @@ type TokenTransport struct {
 	Transport http.RoundTripper
 }
 
-// NewTokenTransport Creates a  new TokenTransport
+// NewTokenTransport Creates a  new TokenTransport.
 func NewTokenTransport(userID, key string) (*TokenTransport, error) {
 	if userID == "" || key == "" {
-		return nil, fmt.Errorf("credentials missing")
+		return nil, errors.New("credentials missing")
 	}
 
 	return &TokenTransport{userID: userID, key: key}, nil
 }
 
-// RoundTrip executes a single HTTP transaction
+// RoundTrip executes a single HTTP transaction.
 func (t *TokenTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	enrichedReq := &http.Request{}
 	*enrichedReq = *req
@@ -54,7 +55,7 @@ func (t *TokenTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return t.transport().RoundTrip(enrichedReq)
 }
 
-// Wrap Wrap a HTTP client Transport with the TokenTransport
+// Wrap Wrap a HTTP client Transport with the TokenTransport.
 func (t *TokenTransport) Wrap(client *http.Client) *http.Client {
 	backup := client.Transport
 	t.Transport = backup
@@ -63,7 +64,7 @@ func (t *TokenTransport) Wrap(client *http.Client) *http.Client {
 	return client
 }
 
-// Client Creates a new HTTP client
+// Client Creates a new HTTP client.
 func (t *TokenTransport) Client() *http.Client {
 	return &http.Client{
 		Transport: t,
@@ -79,7 +80,7 @@ func (t *TokenTransport) transport() http.RoundTripper {
 	return http.DefaultTransport
 }
 
-// newToken generates a token for accessing a specific method of the API
+// newToken generates a token for accessing a specific method of the API.
 func newToken(userID string, key string, method string, action string, timestamp time.Time) (string, error) {
 	fmtTime := timestamp.Format("20060102T150405Z")
 	message := strings.Join([]string{method, action, fmtTime}, "")

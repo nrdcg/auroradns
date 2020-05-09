@@ -26,17 +26,17 @@ func (e *ErrorResponse) Error() string {
 	return fmt.Sprintf("%s - %s", e.ErrorCode, e.Message)
 }
 
-// Option Type of a client option
+// Option Type of a client option.
 type Option func(*Client) error
 
-// Client The API client
+// Client The API client.
 type Client struct {
 	baseURL    *url.URL
 	UserAgent  string
 	httpClient *http.Client
 }
 
-// NewClient Creates a new client
+// NewClient Creates a new client.
 func NewClient(httpClient *http.Client, opts ...Option) (*Client, error) {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
@@ -125,7 +125,7 @@ func checkResponse(resp *http.Response) error {
 	return fmt.Errorf("status code: %d %s", resp.StatusCode, resp.Status)
 }
 
-// WithBaseURL Allows to define a custom base URL
+// WithBaseURL Allows to define a custom base URL.
 func WithBaseURL(rawBaseURL string) func(*Client) error {
 	return func(client *Client) error {
 		if len(rawBaseURL) == 0 {

@@ -31,6 +31,8 @@
     "gomnd",
     "stylecheck",
     "wsl",
+    "goerr113",
+    "testpackage",
   ]
 
 [issues]
