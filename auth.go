@@ -81,7 +81,7 @@ func (t *TokenTransport) transport() http.RoundTripper {
 }
 
 // newToken generates a token for accessing a specific method of the API.
-func newToken(userID string, key string, method string, action string, timestamp time.Time) (string, error) {
+func newToken(userID, key, method, action string, timestamp time.Time) (string, error) {
 	fmtTime := timestamp.Format("20060102T150405Z")
 	message := strings.Join([]string{method, action, fmtTime}, "")
 

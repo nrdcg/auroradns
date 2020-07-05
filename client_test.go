@@ -18,7 +18,7 @@ func setupTest() (*Client, *http.ServeMux, func()) {
 	return client, apiHandler, server.Close
 }
 
-func handleAPI(mux *http.ServeMux, pattern string, method string, next func(w http.ResponseWriter, r *http.Request)) {
+func handleAPI(mux *http.ServeMux, pattern, method string, next func(w http.ResponseWriter, r *http.Request)) {
 	mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != method {
 			http.Error(w, fmt.Sprintf("invalid method %s", r.Method), http.StatusMethodNotAllowed)

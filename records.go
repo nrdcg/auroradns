@@ -56,7 +56,7 @@ func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Resp
 }
 
 // DeleteRecord Delete a record.
-func (c *Client) DeleteRecord(zoneID string, recordID string) (bool, *http.Response, error) {
+func (c *Client) DeleteRecord(zoneID, recordID string) (bool, *http.Response, error) {
 	resource := fmt.Sprintf("/zones/%s/records/%s", zoneID, recordID)
 
 	req, err := c.newRequest(http.MethodDelete, resource, nil)

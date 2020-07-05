@@ -33,6 +33,7 @@
     "wsl",
     "goerr113",
     "testpackage",
+    "noctx",
   ]
 
 [issues]
