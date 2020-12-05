@@ -100,7 +100,7 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	}
 
 	if err = json.Unmarshal(raw, v); err != nil {
-		return resp, fmt.Errorf("unmarshaling %T error: %v: %s", err, v, string(raw))
+		return resp, fmt.Errorf("unmarshaling %T error: %w: %s", v, err, string(raw))
 	}
 
 	return resp, nil
