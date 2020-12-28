@@ -4,18 +4,23 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
-func setupTest() (*Client, *http.ServeMux, func()) {
+func setupTest(t *testing.T) (*Client, *http.ServeMux) {
+	t.Helper()
+
 	apiHandler := http.NewServeMux()
 	server := httptest.NewServer(apiHandler)
 
 	client, err := NewClient(nil, WithBaseURL(server.URL))
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 
-	return client, apiHandler, server.Close
+	t.Cleanup(server.Close)
+
+	return client, apiHandler
 }
 
 func handleAPI(mux *http.ServeMux, pattern, method string, next func(w http.ResponseWriter, r *http.Request)) {

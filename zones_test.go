@@ -11,8 +11,7 @@ import (
 )
 
 func TestClient_CreateZone(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodPost, func(w http.ResponseWriter, r *http.Request) {
 		reqBody, err := ioutil.ReadAll(r.Body)
@@ -48,8 +47,7 @@ func TestClient_CreateZone(t *testing.T) {
 }
 
 func TestClient_CreateZone_error(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodPost, func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -73,8 +71,7 @@ func TestClient_CreateZone_error(t *testing.T) {
 }
 
 func TestClient_DeleteZone(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
@@ -90,8 +87,7 @@ func TestClient_DeleteZone(t *testing.T) {
 }
 
 func TestClient_DeleteZone_error(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -115,8 +111,7 @@ func TestClient_DeleteZone_error(t *testing.T) {
 }
 
 func TestClient_ListZones(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, r *http.Request) {
 		_, err := fmt.Fprintf(w, `[
@@ -142,8 +137,7 @@ func TestClient_ListZones(t *testing.T) {
 }
 
 func TestClient_ListZones_error(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)

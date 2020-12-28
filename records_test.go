@@ -11,8 +11,7 @@ import (
 )
 
 func TestClient_CreateRecord(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-2"
 
@@ -64,8 +63,7 @@ func TestClient_CreateRecord(t *testing.T) {
 }
 
 func TestClient_CreateRecord_error(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-2"
 
@@ -108,8 +106,7 @@ func TestClient_CreateRecord_error(t *testing.T) {
 }
 
 func TestClient_RemoveRecord(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-3"
 	recordID := "identifier-record-2"
@@ -126,8 +123,7 @@ func TestClient_RemoveRecord(t *testing.T) {
 }
 
 func TestClient_RemoveRecord_error(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-3"
 	recordID := "identifier-record-2"
@@ -154,8 +150,7 @@ func TestClient_RemoveRecord_error(t *testing.T) {
 }
 
 func TestClient_ListRecords(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-1"
 
@@ -193,8 +188,7 @@ func TestClient_ListRecords(t *testing.T) {
 }
 
 func TestClient_ListRecords_error(t *testing.T) {
-	client, mux, tearDown := setupTest()
-	defer tearDown()
+	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-1"
 
