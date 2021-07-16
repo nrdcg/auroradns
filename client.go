@@ -128,7 +128,7 @@ func checkResponse(resp *http.Response) error {
 // WithBaseURL Allows to define a custom base URL.
 func WithBaseURL(rawBaseURL string) func(*Client) error {
 	return func(client *Client) error {
-		if len(rawBaseURL) == 0 {
+		if rawBaseURL == "" {
 			return nil
 		}
 
