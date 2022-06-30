@@ -11,27 +11,27 @@ import (
 
 func TestNewTokenTransport_success(t *testing.T) {
 	apiKey := "☺"
-	secretKey := "🔑"
+	secret := "🔑"
 
-	transport, err := NewTokenTransport(apiKey, secretKey)
+	transport, err := NewTokenTransport(apiKey, secret)
 	require.NoError(t, err)
 	assert.NotNil(t, transport)
 }
 
 func TestNewTokenTransport_missing_credentials(t *testing.T) {
 	apiKey := ""
-	secretKey := ""
+	secret := ""
 
-	transport, err := NewTokenTransport(apiKey, secretKey)
+	transport, err := NewTokenTransport(apiKey, secret)
 	require.Error(t, err)
 	assert.Nil(t, transport)
 }
 
 func TestTokenTransport_RoundTrip(t *testing.T) {
 	apiKey := "☺"
-	secretKey := "🔑"
+	secret := "🔑"
 
-	transport, err := NewTokenTransport(apiKey, secretKey)
+	transport, err := NewTokenTransport(apiKey, secret)
 	require.NoError(t, err)
 
 	req := httptest.NewRequest(http.MethodGet, "http://example.com", nil)

@@ -23,7 +23,7 @@ Records:
 ## Example
 
 ```go
-tr, _ := auroradns.NewTokenTransport("apiKey", "secretKey")
+tr, _ := auroradns.NewTokenTransport("apiKey", "secret")
 client, _ := auroradns.NewClient(tr.Client())
 
 zones, _, _ := client.GetZones()
