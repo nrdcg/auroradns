@@ -2,7 +2,7 @@ package auroradns
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 
@@ -16,7 +16,7 @@ func TestClient_CreateRecord(t *testing.T) {
 	zoneID := "identifier-zone-2"
 
 	handleAPI(mux, "/zones/identifier-zone-2/records", http.MethodPost, func(w http.ResponseWriter, r *http.Request) {
-		reqBody, err := ioutil.ReadAll(r.Body)
+		reqBody, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -68,7 +68,7 @@ func TestClient_CreateRecord_error(t *testing.T) {
 	zoneID := "identifier-zone-2"
 
 	handleAPI(mux, "/zones/identifier-zone-2/records", http.MethodPost, func(w http.ResponseWriter, r *http.Request) {
-		reqBody, err := ioutil.ReadAll(r.Body)
+		reqBody, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

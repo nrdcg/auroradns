@@ -52,6 +52,7 @@ linters:
     - interfacer # deprecated
     - scopelint # deprecated
     - golint # deprecated
+    - exhaustivestruct # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
     - cyclop # duplicate of gocyclo
@@ -63,7 +64,7 @@ linters:
     - goerr113
     - wrapcheck
     - exhaustive
-    - exhaustivestruct
+    - exhaustruct
     - testpackage
     - tparallel
     - paralleltest
@@ -71,6 +72,7 @@ linters:
     - ifshort
     - forcetypeassert
     - noctx
+    - varnamelen
 
 issues:
   exclude-use-default: false

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 )
@@ -17,12 +16,16 @@ const (
 )
 
 // ErrorResponse A representation of an API error message.
-type ErrorResponse struct {
+// Deprecated: use ResponseError instead.
+type ErrorResponse = ResponseError
+
+// ResponseError A representation of an API error message.
+type ResponseError struct {
 	ErrorCode string `json:"error"`
 	Message   string `json:"errormsg"`
 }
 
-func (e *ErrorResponse) Error() string {
+func (e *ResponseError) Error() string {
 	return fmt.Sprintf("%s - %s", e.ErrorCode, e.Message)
 }
 
@@ -94,7 +97,7 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 		return resp, nil
 	}
 
-	raw, err := ioutil.ReadAll(resp.Body)
+	raw, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return resp, fmt.Errorf("failed to read body: %w", err)
 	}
@@ -111,9 +114,9 @@ func checkResponse(resp *http.Response) error {
 		return nil
 	}
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err == nil && data != nil {
-		errorResponse := new(ErrorResponse)
+		errorResponse := new(ResponseError)
 		err = json.Unmarshal(data, errorResponse)
 		if err != nil {
 			return fmt.Errorf("unmarshaling ErrorResponse error: %w: %s", err, string(data))
