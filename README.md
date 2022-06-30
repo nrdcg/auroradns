@@ -23,7 +23,7 @@ Records:
 ## Example
 
 ```go
-tr, _ := auroradns.NewTokenTransport("userID", "key")
+tr, _ := auroradns.NewTokenTransport("apiKey", "secret")
 client, _ := auroradns.NewClient(tr.Client())
 
 zones, _, _ := client.GetZones()
@@ -33,5 +33,4 @@ fmt.Println(zones)
 
 ## API Documentation
 
-- [API endpoint information](https://www.pcextreme.nl/community/d/111-what-is-the-api-endpoint-for-dns-health-checks)
 - [API docs](https://libcloud.readthedocs.io/en/latest/dns/drivers/auroradns.html#api-docs)
