@@ -13,8 +13,8 @@ import (
 
 // TokenTransport HTTP transport for API authentication.
 type TokenTransport struct {
-	userID string
-	key    string
+	apiKey    string
+	secretKey string
 
 	// Transport is the underlying HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
@@ -22,12 +22,12 @@ type TokenTransport struct {
 }
 
 // NewTokenTransport Creates a  new TokenTransport.
-func NewTokenTransport(userID, key string) (*TokenTransport, error) {
-	if userID == "" || key == "" {
+func NewTokenTransport(apiKey, secretKey string) (*TokenTransport, error) {
+	if apiKey == "" || secretKey == "" {
 		return nil, errors.New("credentials missing")
 	}
 
-	return &TokenTransport{userID: userID, key: key}, nil
+	return &TokenTransport{apiKey: apiKey, secretKey: secretKey}, nil
 }
 
 // RoundTrip executes a single HTTP transaction.
@@ -40,13 +40,13 @@ func (t *TokenTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		enrichedReq.Header[k] = append([]string(nil), s...)
 	}
 
-	if t.userID != "" && t.key != "" {
+	if t.apiKey != "" && t.secretKey != "" {
 		timestamp := time.Now().UTC()
 
 		fmtTime := timestamp.Format("20060102T150405Z")
 		enrichedReq.Header.Set("X-AuroraDNS-Date", fmtTime)
 
-		token, err := newToken(t.userID, t.key, req.Method, req.URL.Path, timestamp)
+		token, err := newToken(t.apiKey, t.secretKey, req.Method, req.URL.Path, timestamp)
 		if err == nil {
 			enrichedReq.Header.Set("Authorization", fmt.Sprintf("AuroraDNSv1 %s", token))
 		}
@@ -81,11 +81,11 @@ func (t *TokenTransport) transport() http.RoundTripper {
 }
 
 // newToken generates a token for accessing a specific method of the API.
-func newToken(userID, key, method, action string, timestamp time.Time) (string, error) {
+func newToken(apiKey, secretKey, method, action string, timestamp time.Time) (string, error) {
 	fmtTime := timestamp.Format("20060102T150405Z")
 	message := strings.Join([]string{method, action, fmtTime}, "")
 
-	signatureHmac := hmac.New(sha256.New, []byte(key))
+	signatureHmac := hmac.New(sha256.New, []byte(secretKey))
 	_, err := signatureHmac.Write([]byte(message))
 	if err != nil {
 		return "", err
@@ -93,9 +93,9 @@ func newToken(userID, key, method, action string, timestamp time.Time) (string, 
 
 	signature := base64.StdEncoding.EncodeToString(signatureHmac.Sum(nil))
 
-	userIDAndSignature := fmt.Sprintf("%s:%s", userID, signature)
+	apiKeyAndSignature := fmt.Sprintf("%s:%s", apiKey, signature)
 
-	token := base64.StdEncoding.EncodeToString([]byte(userIDAndSignature))
+	token := base64.StdEncoding.EncodeToString([]byte(apiKeyAndSignature))
 
 	return token, nil
 }
