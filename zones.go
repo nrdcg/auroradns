@@ -20,7 +20,9 @@ func (c *Client) CreateZone(domain string) (*Zone, *http.Response, error) {
 		return nil, nil, fmt.Errorf("failed to marshall request body: %w", err)
 	}
 
-	req, err := c.newRequest(http.MethodPost, "/zones", bytes.NewReader(body))
+	endpoint := c.baseURL.JoinPath("zones")
+
+	req, err := http.NewRequest(http.MethodPost, endpoint.String(), bytes.NewReader(body))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -36,9 +38,9 @@ func (c *Client) CreateZone(domain string) (*Zone, *http.Response, error) {
 
 // DeleteZone Delete a zone.
 func (c *Client) DeleteZone(zoneID string) (bool, *http.Response, error) {
-	resource := fmt.Sprintf("/zones/%s", zoneID)
+	endpoint := c.baseURL.JoinPath("zones", zoneID)
 
-	req, err := c.newRequest(http.MethodDelete, resource, nil)
+	req, err := http.NewRequest(http.MethodDelete, endpoint.String(), http.NoBody)
 	if err != nil {
 		return false, nil, err
 	}
@@ -53,7 +55,9 @@ func (c *Client) DeleteZone(zoneID string) (bool, *http.Response, error) {
 
 // ListZones returns a list of all zones.
 func (c *Client) ListZones() ([]Zone, *http.Response, error) {
-	req, err := c.newRequest(http.MethodGet, "/zones", nil)
+	endpoint := c.baseURL.JoinPath("zones")
+
+	req, err := http.NewRequest(http.MethodGet, endpoint.String(), http.NoBody)
 	if err != nil {
 		return nil, nil, err
 	}

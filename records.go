@@ -39,9 +39,9 @@ func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Resp
 		return nil, nil, fmt.Errorf("failed to marshall request body: %w", err)
 	}
 
-	resource := fmt.Sprintf("/zones/%s/records", zoneID)
+	endpoint := c.baseURL.JoinPath("zones", zoneID, "records")
 
-	req, err := c.newRequest(http.MethodPost, resource, bytes.NewReader(body))
+	req, err := http.NewRequest(http.MethodPost, endpoint.String(), bytes.NewReader(body))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -57,9 +57,9 @@ func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Resp
 
 // DeleteRecord Delete a record.
 func (c *Client) DeleteRecord(zoneID, recordID string) (bool, *http.Response, error) {
-	resource := fmt.Sprintf("/zones/%s/records/%s", zoneID, recordID)
+	endpoint := c.baseURL.JoinPath("zones", zoneID, "records", recordID)
 
-	req, err := c.newRequest(http.MethodDelete, resource, nil)
+	req, err := http.NewRequest(http.MethodDelete, endpoint.String(), http.NoBody)
 	if err != nil {
 		return false, nil, err
 	}
@@ -74,9 +74,9 @@ func (c *Client) DeleteRecord(zoneID, recordID string) (bool, *http.Response, er
 
 // ListRecords returns a list of all records in given zone.
 func (c *Client) ListRecords(zoneID string) ([]Record, *http.Response, error) {
-	resource := fmt.Sprintf("/zones/%s/records", zoneID)
+	endpoint := c.baseURL.JoinPath("zones", zoneID, "records")
 
-	req, err := c.newRequest(http.MethodGet, resource, nil)
+	req, err := http.NewRequest(http.MethodGet, endpoint.String(), http.NoBody)
 	if err != nil {
 		return nil, nil, err
 	}

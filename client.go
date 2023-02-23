@@ -62,27 +62,13 @@ func NewClient(httpClient *http.Client, opts ...Option) (*Client, error) {
 	return client, nil
 }
 
-func (c *Client) newRequest(method, resource string, body io.Reader) (*http.Request, error) {
-	u, err := c.baseURL.Parse(resource)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(method, u.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
+func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	req.Header.Set(contentTypeHeader, contentTypeJSON)
 
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}
 
-	return req, nil
-}
-
-func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
