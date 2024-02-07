@@ -34,7 +34,7 @@ func TestTokenTransport_RoundTrip(t *testing.T) {
 	transport, err := NewTokenTransport(apiKey, secret)
 	require.NoError(t, err)
 
-	req := httptest.NewRequest(http.MethodGet, "http://example.com", nil)
+	req := httptest.NewRequest(http.MethodGet, "http://example.com", http.NoBody)
 
 	resp, err := transport.RoundTrip(req)
 	require.NoError(t, err)
