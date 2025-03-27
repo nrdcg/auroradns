@@ -49,8 +49,9 @@ func TestClient_CreateZone(t *testing.T) {
 func TestClient_CreateZone_error(t *testing.T) {
 	client, mux := setupTest(t)
 
-	handleAPI(mux, "/zones", http.MethodPost, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones", http.MethodPost, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
+
 		_, err := fmt.Fprintf(w, `{
   			"error": "AuthenticationRequiredError",
   			"errormsg": "Failed to parse Authorization header"
@@ -73,7 +74,7 @@ func TestClient_CreateZone_error(t *testing.T) {
 func TestClient_DeleteZone(t *testing.T) {
 	client, mux := setupTest(t)
 
-	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -89,8 +90,9 @@ func TestClient_DeleteZone(t *testing.T) {
 func TestClient_DeleteZone_error(t *testing.T) {
 	client, mux := setupTest(t)
 
-	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
+
 		_, err := fmt.Fprintf(w, `{
   			"error": "AuthenticationRequiredError",
   			"errormsg": "Failed to parse Authorization header"
@@ -113,7 +115,7 @@ func TestClient_DeleteZone_error(t *testing.T) {
 func TestClient_ListZones(t *testing.T) {
 	client, mux := setupTest(t)
 
-	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, _ *http.Request) {
 		_, err := fmt.Fprintf(w, `[
 				{
 					"id":   "identifier-zone-1",
@@ -139,8 +141,9 @@ func TestClient_ListZones(t *testing.T) {
 func TestClient_ListZones_error(t *testing.T) {
 	client, mux := setupTest(t)
 
-	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
+
 		_, err := fmt.Fprintf(w, `{
   			"error": "AuthenticationRequiredError",
   			"errormsg": "Failed to parse Authorization header"

@@ -47,6 +47,7 @@ func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Resp
 	}
 
 	newRecord := new(Record)
+
 	resp, err := c.do(req, newRecord)
 	if err != nil {
 		return nil, resp, err
@@ -82,6 +83,7 @@ func (c *Client) ListRecords(zoneID string) ([]Record, *http.Response, error) {
 	}
 
 	var records []Record
+
 	resp, err := c.do(req, &records)
 	if err != nil {
 		return nil, resp, err

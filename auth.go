@@ -85,6 +85,7 @@ func newToken(apiKey, secret, method, action string, timestamp time.Time) (strin
 	message := method + action + fmtTime
 
 	signatureHmac := hmac.New(sha256.New, []byte(secret))
+
 	_, err := signatureHmac.Write([]byte(message))
 	if err != nil {
 		return "", err

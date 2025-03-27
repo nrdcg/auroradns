@@ -21,12 +21,14 @@ func TestClient_CreateRecord(t *testing.T) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
 		if string(reqBody) != `{"type":"TXT","name":"foo","content":"w6uP8Tcg6K2QR905Rms8iXTlksL6OD1KOWBxTK7wxPI","ttl":300}` {
 			http.Error(w, fmt.Sprintf("invalid request body: %s", string(reqBody)), http.StatusInternalServerError)
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
+
 		_, err = fmt.Fprintf(w, `{
 				"id":   "identifier-record-1",
 				"type": "TXT",
@@ -73,12 +75,14 @@ func TestClient_CreateRecord_error(t *testing.T) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
 		if string(reqBody) != `{"type":"TXT","name":"foo","content":"w6uP8Tcg6K2QR905Rms8iXTlksL6OD1KOWBxTK7wxPI","ttl":300}` {
 			http.Error(w, fmt.Sprintf("invalid request body: %s", string(reqBody)), http.StatusInternalServerError)
 			return
 		}
 
 		w.WriteHeader(http.StatusUnauthorized)
+
 		_, err = fmt.Fprintf(w, `{
   			"error": "AuthenticationRequiredError",
   			"errormsg": "Failed to parse Authorization header"
@@ -128,8 +132,9 @@ func TestClient_RemoveRecord_error(t *testing.T) {
 	zoneID := "identifier-zone-3"
 	recordID := "identifier-record-2"
 
-	handleAPI(mux, "/zones/identifier-zone-3/records/identifier-record-2", http.MethodDelete, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones/identifier-zone-3/records/identifier-record-2", http.MethodDelete, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
+
 		_, err := fmt.Fprintf(w, `{
   			"error": "AuthenticationRequiredError",
   			"errormsg": "Failed to parse Authorization header"
@@ -154,7 +159,7 @@ func TestClient_ListRecords(t *testing.T) {
 
 	zoneID := "identifier-zone-1"
 
-	handleAPI(mux, "/zones/identifier-zone-1/records", http.MethodGet, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones/identifier-zone-1/records", http.MethodGet, func(w http.ResponseWriter, _ *http.Request) {
 		_, err := fmt.Fprintf(w, `[
         {
           "id": "aaa",
@@ -192,8 +197,9 @@ func TestClient_ListRecords_error(t *testing.T) {
 
 	zoneID := "identifier-zone-1"
 
-	handleAPI(mux, "/zones/identifier-zone-1/records", http.MethodGet, func(w http.ResponseWriter, r *http.Request) {
+	handleAPI(mux, "/zones/identifier-zone-1/records", http.MethodGet, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
+
 		_, err := fmt.Fprintf(w, `{
   			"error": "AuthenticationRequiredError",
   			"errormsg": "Failed to parse Authorization header"

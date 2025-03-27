@@ -28,6 +28,7 @@ func (c *Client) CreateZone(domain string) (*Zone, *http.Response, error) {
 	}
 
 	zone := new(Zone)
+
 	resp, err := c.do(req, zone)
 	if err != nil {
 		return nil, resp, err
@@ -63,6 +64,7 @@ func (c *Client) ListZones() ([]Zone, *http.Response, error) {
 	}
 
 	var zones []Zone
+
 	resp, err := c.do(req, &zones)
 	if err != nil {
 		return nil, resp, err

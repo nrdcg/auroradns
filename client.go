@@ -73,6 +73,7 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	defer func() { _ = resp.Body.Close() }()
 
 	if err = checkResponse(resp); err != nil {
@@ -103,6 +104,7 @@ func checkResponse(resp *http.Response) error {
 	data, err := io.ReadAll(resp.Body)
 	if err == nil && data != nil {
 		errorResponse := new(ResponseError)
+
 		err = json.Unmarshal(data, errorResponse)
 		if err != nil {
 			return fmt.Errorf("unmarshaling ErrorResponse error: %w: %s", err, string(data))
