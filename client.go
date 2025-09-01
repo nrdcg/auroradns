@@ -76,7 +76,8 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 
 	defer func() { _ = resp.Body.Close() }()
 
-	if err = checkResponse(resp); err != nil {
+	err = checkResponse(resp)
+	if err != nil {
 		return resp, err
 	}
 
@@ -89,7 +90,8 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 		return resp, fmt.Errorf("failed to read body: %w", err)
 	}
 
-	if err = json.Unmarshal(raw, v); err != nil {
+	err = json.Unmarshal(raw, v)
+	if err != nil {
 		return resp, fmt.Errorf("unmarshaling %T error: %w: %s", v, err, string(raw))
 	}
 
