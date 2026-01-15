@@ -16,6 +16,7 @@ const (
 )
 
 // ErrorResponse A representation of an API error message.
+//
 // Deprecated: use ResponseError instead.
 type ErrorResponse = ResponseError
 
@@ -62,7 +63,7 @@ func NewClient(httpClient *http.Client, opts ...Option) (*Client, error) {
 	return client, nil
 }
 
-func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
+func (c *Client) do(req *http.Request, v any) (*http.Response, error) {
 	req.Header.Set(contentTypeHeader, contentTypeJSON)
 
 	if c.UserAgent != "" {
