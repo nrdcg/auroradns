@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestClient_CreateRecord(t *testing.T) {
+func TestClient_CreateRecordWithContext(t *testing.T) {
 	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-2"
@@ -48,7 +48,7 @@ func TestClient_CreateRecord(t *testing.T) {
 		TTL:        300,
 	}
 
-	newRecord, resp, err := client.CreateRecord(zoneID, record)
+	newRecord, resp, err := client.CreateRecordWithContext(t.Context(), zoneID, record)
 	require.NoError(t, err)
 
 	require.NotNil(t, resp)
@@ -64,7 +64,7 @@ func TestClient_CreateRecord(t *testing.T) {
 	assert.Equal(t, expected, newRecord)
 }
 
-func TestClient_CreateRecord_error(t *testing.T) {
+func TestClient_CreateRecordWithContext_error(t *testing.T) {
 	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-2"
@@ -100,7 +100,7 @@ func TestClient_CreateRecord_error(t *testing.T) {
 		TTL:        300,
 	}
 
-	newRecord, resp, err := client.CreateRecord(zoneID, record)
+	newRecord, resp, err := client.CreateRecordWithContext(t.Context(), zoneID, record)
 	require.EqualError(t, err, "AuthenticationRequiredError - Failed to parse Authorization header")
 
 	require.NotNil(t, resp)
@@ -109,7 +109,7 @@ func TestClient_CreateRecord_error(t *testing.T) {
 	assert.Nil(t, newRecord)
 }
 
-func TestClient_RemoveRecord(t *testing.T) {
+func TestClient_RemoveRecordWithContext(t *testing.T) {
 	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-3"
@@ -117,7 +117,7 @@ func TestClient_RemoveRecord(t *testing.T) {
 
 	handleAPI(mux, "/zones/identifier-zone-3/records/identifier-record-2", http.MethodDelete, nil)
 
-	result, resp, err := client.DeleteRecord(zoneID, recordID)
+	result, resp, err := client.DeleteRecordWithContext(t.Context(), zoneID, recordID)
 	require.NoError(t, err)
 
 	require.NotNil(t, resp)
@@ -126,7 +126,7 @@ func TestClient_RemoveRecord(t *testing.T) {
 	assert.True(t, result)
 }
 
-func TestClient_RemoveRecord_error(t *testing.T) {
+func TestClient_RemoveRecordWithContext_error(t *testing.T) {
 	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-3"
@@ -145,7 +145,7 @@ func TestClient_RemoveRecord_error(t *testing.T) {
 		}
 	})
 
-	result, resp, err := client.DeleteRecord(zoneID, recordID)
+	result, resp, err := client.DeleteRecordWithContext(t.Context(), zoneID, recordID)
 	require.EqualError(t, err, "AuthenticationRequiredError - Failed to parse Authorization header")
 
 	require.NotNil(t, resp)
@@ -154,7 +154,7 @@ func TestClient_RemoveRecord_error(t *testing.T) {
 	assert.False(t, result)
 }
 
-func TestClient_ListRecords(t *testing.T) {
+func TestClient_ListRecordsWithContext(t *testing.T) {
 	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-1"
@@ -180,7 +180,7 @@ func TestClient_ListRecords(t *testing.T) {
 		}
 	})
 
-	records, resp, err := client.ListRecords(zoneID)
+	records, resp, err := client.ListRecordsWithContext(t.Context(), zoneID)
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
@@ -192,7 +192,7 @@ func TestClient_ListRecords(t *testing.T) {
 	assert.Equal(t, expected, records)
 }
 
-func TestClient_ListRecords_error(t *testing.T) {
+func TestClient_ListRecordsWithContext_error(t *testing.T) {
 	client, mux := setupTest(t)
 
 	zoneID := "identifier-zone-1"
@@ -210,7 +210,7 @@ func TestClient_ListRecords_error(t *testing.T) {
 		}
 	})
 
-	records, resp, err := client.ListRecords(zoneID)
+	records, resp, err := client.ListRecordsWithContext(t.Context(), zoneID)
 	require.EqualError(t, err, "AuthenticationRequiredError - Failed to parse Authorization header")
 
 	require.NotNil(t, resp)

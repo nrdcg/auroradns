@@ -2,6 +2,7 @@ package auroradns
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -34,6 +35,11 @@ type Record struct {
 
 // CreateRecord Creates a new record.
 func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Response, error) {
+	return c.CreateRecordWithContext(context.Background(), zoneID, record)
+}
+
+// CreateRecordWithContext Creates a new record.
+func (c *Client) CreateRecordWithContext(ctx context.Context, zoneID string, record Record) (*Record, *http.Response, error) {
 	body, err := json.Marshal(record)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to marshall request body: %w", err)
@@ -41,7 +47,7 @@ func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Resp
 
 	endpoint := c.baseURL.JoinPath("zones", zoneID, "records")
 
-	req, err := http.NewRequest(http.MethodPost, endpoint.String(), bytes.NewReader(body))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint.String(), bytes.NewReader(body))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -58,9 +64,14 @@ func (c *Client) CreateRecord(zoneID string, record Record) (*Record, *http.Resp
 
 // DeleteRecord Delete a record.
 func (c *Client) DeleteRecord(zoneID, recordID string) (bool, *http.Response, error) {
+	return c.DeleteRecordWithContext(context.Background(), zoneID, recordID)
+}
+
+// DeleteRecordWithContext Delete a record.
+func (c *Client) DeleteRecordWithContext(ctx context.Context, zoneID, recordID string) (bool, *http.Response, error) {
 	endpoint := c.baseURL.JoinPath("zones", zoneID, "records", recordID)
 
-	req, err := http.NewRequest(http.MethodDelete, endpoint.String(), http.NoBody)
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, endpoint.String(), http.NoBody)
 	if err != nil {
 		return false, nil, err
 	}
@@ -75,9 +86,14 @@ func (c *Client) DeleteRecord(zoneID, recordID string) (bool, *http.Response, er
 
 // ListRecords returns a list of all records in given zone.
 func (c *Client) ListRecords(zoneID string) ([]Record, *http.Response, error) {
+	return c.ListRecordsWithContext(context.Background(), zoneID)
+}
+
+// ListRecordsWithContext returns a list of all records in given zone.
+func (c *Client) ListRecordsWithContext(ctx context.Context, zoneID string) ([]Record, *http.Response, error) {
 	endpoint := c.baseURL.JoinPath("zones", zoneID, "records")
 
-	req, err := http.NewRequest(http.MethodGet, endpoint.String(), http.NoBody)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint.String(), http.NoBody)
 	if err != nil {
 		return nil, nil, err
 	}

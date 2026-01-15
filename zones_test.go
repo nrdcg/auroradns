@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestClient_CreateZone(t *testing.T) {
+func TestClient_CreateZoneWithContext(t *testing.T) {
 	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodPost, func(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ func TestClient_CreateZone(t *testing.T) {
 		}
 	})
 
-	zone, resp, err := client.CreateZone("example.com")
+	zone, resp, err := client.CreateZoneWithContext(t.Context(), "example.com")
 	require.NoError(t, err)
 
 	require.NotNil(t, resp)
@@ -46,7 +46,7 @@ func TestClient_CreateZone(t *testing.T) {
 	assert.Equal(t, expected, zone)
 }
 
-func TestClient_CreateZone_error(t *testing.T) {
+func TestClient_CreateZoneWithContext_error(t *testing.T) {
 	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodPost, func(w http.ResponseWriter, _ *http.Request) {
@@ -62,7 +62,7 @@ func TestClient_CreateZone_error(t *testing.T) {
 		}
 	})
 
-	zone, resp, err := client.CreateZone("example.com")
+	zone, resp, err := client.CreateZoneWithContext(t.Context(), "example.com")
 	require.Error(t, err)
 
 	require.NotNil(t, resp)
@@ -71,14 +71,14 @@ func TestClient_CreateZone_error(t *testing.T) {
 	assert.Nil(t, zone)
 }
 
-func TestClient_DeleteZone(t *testing.T) {
+func TestClient_DeleteZoneWithContext(t *testing.T) {
 	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	result, resp, err := client.DeleteZone("identifier-zone-1")
+	result, resp, err := client.DeleteZoneWithContext(t.Context(), "identifier-zone-1")
 	require.NoError(t, err)
 
 	require.NotNil(t, resp)
@@ -87,7 +87,7 @@ func TestClient_DeleteZone(t *testing.T) {
 	assert.True(t, result)
 }
 
-func TestClient_DeleteZone_error(t *testing.T) {
+func TestClient_DeleteZoneWithContext_error(t *testing.T) {
 	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones/identifier-zone-1", http.MethodDelete, func(w http.ResponseWriter, _ *http.Request) {
@@ -103,7 +103,7 @@ func TestClient_DeleteZone_error(t *testing.T) {
 		}
 	})
 
-	result, resp, err := client.DeleteZone("identifier-zone-1")
+	result, resp, err := client.DeleteZoneWithContext(t.Context(), "identifier-zone-1")
 	require.Error(t, err)
 
 	require.NotNil(t, resp)
@@ -112,7 +112,7 @@ func TestClient_DeleteZone_error(t *testing.T) {
 	assert.False(t, result)
 }
 
-func TestClient_ListZones(t *testing.T) {
+func TestClient_ListZonesWithContext(t *testing.T) {
 	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, _ *http.Request) {
@@ -128,7 +128,7 @@ func TestClient_ListZones(t *testing.T) {
 		}
 	})
 
-	zones, resp, err := client.ListZones()
+	zones, resp, err := client.ListZonesWithContext(t.Context())
 	require.NoError(t, err)
 
 	require.NotNil(t, resp)
@@ -138,7 +138,7 @@ func TestClient_ListZones(t *testing.T) {
 	assert.Equal(t, expected, zones)
 }
 
-func TestClient_ListZones_error(t *testing.T) {
+func TestClient_ListZonesWithContext_error(t *testing.T) {
 	client, mux := setupTest(t)
 
 	handleAPI(mux, "/zones", http.MethodGet, func(w http.ResponseWriter, _ *http.Request) {
@@ -154,7 +154,7 @@ func TestClient_ListZones_error(t *testing.T) {
 		}
 	})
 
-	zones, resp, err := client.ListZones()
+	zones, resp, err := client.ListZonesWithContext(t.Context())
 	require.EqualError(t, err, "AuthenticationRequiredError - Failed to parse Authorization header")
 
 	require.NotNil(t, resp)
